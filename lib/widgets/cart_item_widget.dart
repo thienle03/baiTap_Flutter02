@@ -26,7 +26,6 @@ class CartItemWidget extends StatelessWidget {
           'Giá: ${cartItem.shoe.price.toStringAsFixed(2)}\$',
           style: const TextStyle(color: Colors.green),
         ),
-        // hiển thị giá
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
