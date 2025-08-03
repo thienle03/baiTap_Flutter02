@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'screens/welcome_screen.dart';
+import 'screens_b/explore_screen.dart';
 
 void main() => runApp(MyApp());
 
@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Grocery App',
       debugShowCheckedModeBanner: false,
-      home: WelcomeScreen(),
+      home: ExploreScreen(),
     );
   }
 }
