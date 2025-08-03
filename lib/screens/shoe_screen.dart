@@ -60,131 +60,132 @@ class _ShoeStoreScreenState extends State<ShoeStoreScreen> {
         backgroundColor: Colors.blue,
         elevation: 2,
       ),
-      body: Column(
-        children: [
-          const SizedBox(height: 12),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 12.0),
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                'Giỏ hàng',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-            ),
-          ),
-          const SizedBox(height: 8),
-          Expanded(
-            flex: 2,
-            child:
-                _cart.isEmpty
-                    ? const Center(
-                      child: Text('Chưa có sản phẩm nào trong giỏ hàng.'),
-                    )
-                    : ListView.builder(
-                      itemCount: _cart.length,
-                      itemBuilder: (context, index) {
-                        final item = _cart[index];
-                        return CartItemWidget(
-                          cartItem: item,
-                          onDelete: () => removeFromCart(item.shoe),
-                        );
-                      },
-                    ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'Tổng tiền:',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.only(bottom: 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 12),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 12.0),
+                child: Text(
+                  'Giỏ hàng',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
-                Text(
-                  '${getTotal().toStringAsFixed(2)}\$',
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Color.fromARGB(255, 255, 0, 0),
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-          const Divider(thickness: 1),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 12.0),
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                'Danh sách giày',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
-            ),
-          ),
-          const SizedBox(height: 8),
-          SizedBox(
-            height: 250,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: _shoes.length,
-              itemBuilder: (context, index) {
-                final shoe = _shoes[index];
-                return Container(
-                  width: 180,
-                  margin: const EdgeInsets.symmetric(horizontal: 8),
-                  child: Card(
-                    elevation: 3,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15),
-                    ),
+              const SizedBox(height: 8),
+              _cart.isEmpty
+                  ? const Center(
                     child: Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: Column(
-                        children: [
-                          Image.asset(
-                            shoe.imagePath,
-                            height: 100,
-                            fit: BoxFit.cover,
-                          ),
-                          const SizedBox(height: 10),
-                          Text(
-                            shoe.name,
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(fontWeight: FontWeight.w600),
-                          ),
-                          const SizedBox(height: 5),
-                          Text(
-                            '${shoe.price.toStringAsFixed(2)}\$',
-                            style: const TextStyle(
-                              color: Color.fromARGB(255, 6, 6, 6),
-                            ),
-                          ),
-                          const Spacer(),
-                          ElevatedButton(
-                            onPressed: () => addToCart(shoe),
-                            child: const Text("Thêm vào giỏ"),
-                            style: ElevatedButton.styleFrom(
-                              foregroundColor: Colors.white,
-                              backgroundColor: Colors.blue,
-                            ),
-                          ),
-                        ],
+                      padding: EdgeInsets.symmetric(vertical: 20),
+                      child: Text('Chưa có sản phẩm nào trong giỏ hàng.'),
+                    ),
+                  )
+                  : ListView.builder(
+                    itemCount: _cart.length,
+                    shrinkWrap: true, // <--- Rất quan trọng
+                    physics: NeverScrollableScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      final item = _cart[index];
+                      return CartItemWidget(
+                        cartItem: item,
+                        onDelete: () => removeFromCart(item.shoe),
+                      );
+                    },
+                  ),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 4,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'Tổng tiền:',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                  ),
-                );
-              },
-            ),
+                    Text(
+                      '${getTotal().toStringAsFixed(2)}\$',
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.red,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const Divider(thickness: 1),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 12.0),
+                child: Text(
+                  'Danh sách giày',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+              ),
+              const SizedBox(height: 8),
+              SizedBox(
+                height: 250,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: _shoes.length,
+                  itemBuilder: (context, index) {
+                    final shoe = _shoes[index];
+                    return Container(
+                      width: 180,
+                      margin: const EdgeInsets.symmetric(horizontal: 8),
+                      child: Card(
+                        elevation: 3,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: Column(
+                            children: [
+                              Image.asset(
+                                shoe.imagePath,
+                                height: 100,
+                                fit: BoxFit.cover,
+                              ),
+                              const SizedBox(height: 10),
+                              Text(
+                                shoe.name,
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              const SizedBox(height: 5),
+                              Text(
+                                '${shoe.price.toStringAsFixed(2)}\$',
+                                style: const TextStyle(color: Colors.black),
+                              ),
+                              const Spacer(),
+                              ElevatedButton(
+                                onPressed: () => addToCart(shoe),
+                                child: const Text("Thêm vào giỏ"),
+                                style: ElevatedButton.styleFrom(
+                                  foregroundColor: Colors.white,
+                                  backgroundColor: Colors.blue,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
           ),
-          const SizedBox(height: 12),
-        ],
+        ),
       ),
     );
   }
